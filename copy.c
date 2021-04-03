@@ -15,8 +15,8 @@ lst->head = NULL;
 lst->size = 0;
 }
 
-ins(List * lst, int data) {
-Node* new = (Node*)malloc(sizeof(Node));
+void ins(List * lst, int data) {
+Node* new = (Node*)malloc(sizeof(Node)); // we have dinamic memory
 new ->data = data;
 new ->next = NULL;
 
@@ -26,15 +26,14 @@ new ->next = NULL;
  lst->head = new;
  lst->size++;
  } else{
-     while(current->next != NULL)
+     while(current->next != NULL) //  we reach the end of the list
          current = current->next;
      current->next = new;  
      lst->size++;     
  }
-// free(new->next);
 }
 
-printNode(Node*n){
+void printNode(Node*n){
     if(n == NULL){
     printf("[]");
     return;
@@ -43,7 +42,7 @@ printNode(Node*n){
    
 }
 
-printList(List* lst) {
+void printList(List* lst) {
 Node* current = lst->head;
 
     if(current == NULL){
@@ -59,16 +58,28 @@ Node* current = lst->head;
 }
 
 void copy(List* from, List* to) {
-
-Node * tmp = from->head;
+Node * tmp = from->head; //pointer
 while(tmp ->next != NULL) {
-ins(to, tmp->data);
+ins(to, tmp->data); // defining the elements of the "to" list
 tmp = tmp->next;
 }
-
 ins(to, tmp->data);
-//free(tmp->next);
 }
+
+Node* clear (List* lst) {
+Node* current = lst->head;
+ 
+ if (current == NULL)   
+return NULL;
+
+    while(current -> next != NULL) //  we reach the end of the list
+         current = current->next;
+    free( current -> next );  // and cleaning memory
+    lst->size--;     
+}
+
+ 
+
 int main()
 {
 
@@ -77,7 +88,7 @@ int main()
     init(from);
     init(to);
     printList(from);
-    ins(from,1);
+    ins(from,1);// defining the elements of the "from" list
     ins(from, 2);
     ins(from,1);
     ins(from,4);
@@ -85,13 +96,15 @@ int main()
     copy(from, to);
     printList(to);
     printList(from);
+    while(from->size >= 0){
+    clear(from);
+    }
+    while(to->size >= 0){
+    clear(to);
+    }
 
-//    free(from);
-    
-
-//    free(to);
+    free(from);
+    free(to);
 
 return 0;
 }
-
-
