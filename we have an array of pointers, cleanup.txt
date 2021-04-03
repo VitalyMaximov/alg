@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include<stdlib.h>
+#define SZ 10
+
+typedef struct {
+    int pr;
+    int dat;
+} Node;
+
+Node* arr[SZ];
+int head;
+int tail;
+int items;
+
+void init() {
+    for (int i = 0; i < SZ; ++i) {
+    arr[i] = NULL;
+    }
+    head = 0;
+    tail = 0;
+    items = 0;
+}
+void ins(int pr, int dat) {  
+    Node *node = (Node*) malloc(sizeof(Node));
+    node -> dat = dat;
+    node -> pr  = pr;
+    if(items == 0) {
+    arr[tail++] = node;
+    items++;
+    }else if (items == SZ) {
+          printf("%s \n" , "Queue is full");
+        return;
+    } else {
+          arr[tail++] = node;
+          items++;
+    }  
+}
+
+
+Node* rem() {
+    if (items == 0) {
+        return NULL;
+        } else {// left <-=
+          int max = 0;
+          int i = 0; 
+          int idx = 0;
+          int w = 0;
+        for (i = head; i < tail; ++i) { 
+            idx = i % SZ;
+            if (arr[idx] -> pr > max){
+            max = arr[idx]->pr;//idx
+            w = idx;
+            }
+        }
+
+        Node *tmp = arr[w];
+        while(arr[w] != NULL){
+        arr[w] = arr[w+1];
+        w++;
+        }
+        items--;
+        --tail;
+        return tmp;
+        }
+}
+
+//--------------------------------------------------------------------------------
+void clearmem(Node* tmp) {
+ free(tmp);
+}
+//--------------------------------------------------------------------------------
+
+void printQueue() {
+
+    printf("[ ");
+    for (int i = 0; i < SZ; ++i) {
+        if (arr[i] == NULL)
+            printf("[*, *] ");
+        else
+            printf("[%d, %d] ", arr[i] -> pr, arr[i] -> dat);
+}     
+ printf(" ]\n");
+ } 
+int main(){
+ init();
+ ins(1, 11);
+ ins(3, 22);
+ ins(4, 33);
+ ins (2,55);
+  ins (7,35);
+   ins (5,59);
+    ins (8,55);
+     ins (9,55);
+ printQueue();
+ int l = 0;
+while(l < 4){
+      Node* n = rem(); //pointer  from ins()
+      printf("pr=%d, dat=%d \n", n->pr, n->dat );
+      l++;
+      clearmem( n);
+}
+
+  printQueue(); 
+   ins (6,44);
+   ins (6,44);ins (6,44);
+      ins (6,44);ins (6,44);
+         ins (6,44);ins (6,44);
+            ins (6,44);ins (6,44);
+     printQueue();
+ // haven`t memory  leak  ----------------------------------------------------------------
+for (int i = 0; i < SZ; i++) {// count 
+    Node* n = rem();//becase pointer  from ins(), if have dinamic memory  she clear 
+       clearmem(n);
+}
