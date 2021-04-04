@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#define SZ 50
+#define T char
+#define true 1 == 1
+#define false 1 != 1
+typedef int boolean;
+boolean sort(T* str) {
+
+int buf[strlen(str)], idx = 0;
+int init = 0;
+while(strlen(str)>init)
+buf[init++] = -1;
+int flag = 0;
+
+  for(unsigned int i = 0; i < strlen(str); i++) {
+  
+  if (str[i] == ')' || str[i] == '}' || str[i] == ']')  { 
+flag = 1;
+  char c;
+  int j = i;                    
+  if(str[i] == ')') c = '(';
+    if(str[i] == '}') c = '{';
+      if(str[i] == ']') c = '[';
+  while(str[j] != c && j != buf[idx] && j >= 0){ 
+      j--;
+  }
+  if (str[j] == c)
+      buf[idx++] = j;
+  else
+      return false;
+  }
+  }
+ if (flag == 0) 
+     return false;
+  return true;
+  } 
+
+
+int main()
+{
+    T m[SZ];
+    int i = 0;
+
+char c;
+while ((c = getchar()) != '\n' && i < SZ  ) {
+m[i] = c;
+i++;
+}
+
+    for (i = 0; i < strlen(m); ++i ) {
+        printf("%c", m[i]);
+    }
+    if(sort(m))
+   printf("- true");
+   else
+   printf("- false");
+     
+    return 0;
+}
